@@ -1,6 +1,6 @@
 from redis import Redis
 import redis
-from typing import TypeVar, Iterable, Type, Any
+from typing import TypeVar, Iterable, Type, Any, Union
 
 T = TypeVar('T')
 VT = TypeVar('VT')

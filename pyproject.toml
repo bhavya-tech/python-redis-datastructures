@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "py-redis-ds"
+version = "0.0.0"
+authors = [
+  { name="Bhavya Peshavaria", email="bhavyapeshavaria@gmail.com" },
+]
+description = "Drop-in replacements for Python data structures backed by Redis for shared access."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "redis>=5.2.1"
+]
+
+[project.urls]
+Homepage = "https://github.com/bhavya-tech/python-redis-datastructures"
+Issues = "https://github.com/bhavya-tech/python-redis-datastructures/issues"

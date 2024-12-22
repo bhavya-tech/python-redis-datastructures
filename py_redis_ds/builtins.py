@@ -1,6 +1,6 @@
 
 from py_redis_ds.common import *
-
+from typing import Set as SetType
 
 class List(RedisDsInterface, list):
 
@@ -67,14 +67,14 @@ class Dict(RedisDsInterface, dict):
     def copy(self) -> dict:
         return self.redis.hgetall(self.name)
 
-    def keys(self) -> list[KT]:
+    def keys(self) -> [KT]:
         """
         ! The return type is different than builtin.
         in the builtin, it returns a dict_keys object.
         """
         return list(self.redis.hkeys(self.name))
     
-    def values(self) -> list[VT]:
+    def values(self) -> [VT]:
         """
         ! The return type is different than builtin.
         in the builtin, it returns a dict_values object.
@@ -84,10 +84,10 @@ class Dict(RedisDsInterface, dict):
     def items(self):
         return self._fetch().items()
     
-    def get(self, key: KT, default: VT = None) -> VT | None:
+    def get(self, key: KT, default: VT = None) -> Union[VT, None]:
         return self._fetch_item(key) or default
     
-    def pop(self, key: KT, default: VT = None) -> VT | None:
+    def pop(self, key: KT, default: VT = None) -> Union[VT, None]:
         val = self._fetch_item(key) or default
         self.redis.hdel(self.name, key)
         return val
@@ -143,10 +143,10 @@ class Set(RedisDsInterface, set):
     def add(self, element: T):
         self.redis.sadd(self.name, element)
 
-    def copy(self) -> set[T]:
+    def copy(self) -> SetType[T]:
         return set(self.redis.smembers(self.name))
     
-    def difference(self, *s: Iterable[Any]) -> set[T]:
+    def difference(self, *s: Iterable[Any]) -> SetType[T]:
         return self.redis.sdiff(self.name, list(s))
     
     def difference_update(self, *s: Iterable[Any]):
@@ -155,7 +155,7 @@ class Set(RedisDsInterface, set):
     def discard(self, element: T):
         self.redis.srem(self.name, element)
 
-    def intersection(self, *s: Iterable[Any]) -> set[T]:
+    def intersection(self, *s: Iterable[Any]) -> SetType[T]:
         return set(self.redis.sinter(self.name, list(s)))
     
     def intersection_update(self, *s: Iterable[Any]):
@@ -175,7 +175,7 @@ class Set(RedisDsInterface, set):
     def remove(self, value: T):
         self.redis.srem(self.name, value)
     
-    def symmetric_difference(self, s: Iterable[T]) -> set[T]:
+    def symmetric_difference(self, s: Iterable[T]) -> SetType[T]:
         return self.union(s) - self.intersection(s)
     
     def symmetric_difference_update(self, s: Iterable[T]):
@@ -187,7 +187,7 @@ class Set(RedisDsInterface, set):
 
         raise NotImplementedError
 
-    def union(self, *s: Iterable[Any]) -> set[T]:
+    def union(self, *s: Iterable[Any]) -> SetType[T]:
         return set(self.redis.sunion(self.name, list(s)))
     
     def update(self, values: Iterable[T]):
