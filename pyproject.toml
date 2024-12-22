@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "py-redis-ds"
-version = "0.0.0"
+version = "0.0.0-alpha"
 authors = [
   { name="Bhavya Peshavaria", email="bhavyapeshavaria@gmail.com" },
 ]
