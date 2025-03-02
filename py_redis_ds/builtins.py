@@ -29,9 +29,6 @@ class List(RedisDsInterface, list):
         return self.redis.lrange(self.name, 0, -1).count(value)
     
     def sort(self, reverse: bool = False):
-        """
-        Func cannot be used by redis, can be done at python level if needed.
-        """
         self.redis.sort(self.name, desc=reverse)
     
     def reverse(self):
