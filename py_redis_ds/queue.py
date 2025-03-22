@@ -2,6 +2,7 @@ from py_redis_ds.common import *
 from py_redis_ds.collections import Deque
 from py_redis_ds.builtins import List
 import queue as pyqueue
+import uuid
 
 class Queue(RedisDsInterface, pyqueue.Queue):
     def __init__(self, name, redis: Redis, maxsize:int=0):
@@ -65,24 +66,7 @@ class PriorityQueue(Queue, pyqueue.PriorityQueue):
     This will assume that the items are tuples of (priority, item).    
     """
 
-    class _Counter:
-        """
-        Since we are using ordered set, we need to keep a counter
-        to make each item unique. Since its an 128 bit counter,
-        it is highly unlikely that two items will have same
-        counter value.
-
-        Todo: Can try to find a better way to implement this.
-        """
-        def __init__(self, redis: Redis, queue_name):
-            self.name = queue_name + ':counter'
-            self.redis = redis
-
-        def increment(self):
-            return self.redis.incr(self.name)
-
     def __init__(self, name, redis, maxsize = 0):
-        self._counter = self._Counter(redis, name)
         super().__init__(name, redis, maxsize)
 
     def _init(self, maxsize):
@@ -100,7 +84,7 @@ class PriorityQueue(Queue, pyqueue.PriorityQueue):
 
     def _put(self, item: tuple[int, T]):
         priority = item[0]
-        item_to_add = (item[1], self._counter.increment())
+        item_to_add = (item[1], str(uuid.uuid4()))
         self.redis.zadd(self.name, {item_to_add: priority})
 
     def _fetch(self) -> list[tuple[int, T]]:
