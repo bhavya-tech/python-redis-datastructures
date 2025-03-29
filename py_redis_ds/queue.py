@@ -109,9 +109,12 @@ class LifoQueue(Queue, pyqueue.LifoQueue):
 
     def _fetch(self) -> list[T]:
         return self.redis.lrange(self.name, 0, -1)
+    
+    def _qsize(self):
+        return self.redis.llen(self.name)
 
     def _get(self) -> T:
         return self.redis.lpop(self.name)
 
     def _put(self, item: T):
-        self.redis.append(item)
+        self.redis.lpush(self.name, item)
