@@ -55,14 +55,17 @@ print(rlist2[1])  # Output: World
 
 ## 📚 Supported Data Structures
 
-| Data Structure | Redis-Backed Equivalent |
-|----------------|-------------------------|
-| `list`         | `py_redis_ds.builtins.List` |
-| `dict`         | `py_redis_ds.builtins.Dict` |
-| `set`          | `py_redis_ds.builtins.Set` |
-| `queue.Queue`  | `py_redis_ds.queue.Queue` |
-| `collections.deque` | `py_redis_ds.collections.Deque` |
+| Data Structure            | Redis-Backed Equivalent               |
+|---------------------------|---------------------------------------|
+| `list`                    | `py_redis_ds.builtins.List`           |
+| `dict`                    | `py_redis_ds.builtins.Dict`           |
+| `set`                     | `py_redis_ds.builtins.Set`            |
+| `queue.Queue`             | `py_redis_ds.queue.Queue`             |
+| `queue.LifoQueue`         | `py_redis_ds.queue.LifoQueue`         |
+| `queue.PriorityQueue`     | `py_redis_ds.queue.PriorityQueue`     |
+| `collections.deque`       | `py_redis_ds.collections.Deque`       |
 | `collections.defaultdict` | `py_redis_ds.collections.DefaultDict` |
+
 (Support for more data structures coming soon!)
 
 ---
