@@ -3,6 +3,7 @@ from py_redis_ds.collections import Deque
 from py_redis_ds.builtins import List
 import queue as pyqueue
 import uuid
+import pickle
 
 class Queue(RedisDsInterface, pyqueue.Queue):
     def __init__(self, name, redis: Redis, maxsize:int=0):
@@ -85,14 +86,19 @@ class PriorityQueue(Queue, pyqueue.PriorityQueue):
     def _put(self, item: tuple[int, T]):
         priority = item[0]
         item_to_add = (item[1], str(uuid.uuid4()))
+        item_to_add = pickle.dumps(item_to_add)
         self.redis.zadd(self.name, {item_to_add: priority})
 
     def _fetch(self) -> list[tuple[int, T]]:
         return self.redis.zrange(self.name, 0, -1, withscores=True)
 
-    def _get(self):
-        item_added, score = self.redis.zpopmin(self.name, 1)
+    def _get(self) -> tuple[int, T]:
+        item_added_picklized, score = self.redis.zpopmin(self.name, 1)[0]
+        item_added = pickle.loads(item_added_picklized)
         return (score, item_added[0])
+    
+    def _qsize(self) -> int:
+        return self.redis.zcard(self.name)
 
 
 class LifoQueue(Queue, pyqueue.LifoQueue):
