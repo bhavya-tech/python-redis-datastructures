@@ -61,6 +61,9 @@ class Deque(RedisDsInterface, deque):
             raise IndexError('pop from an empty deque')
         else:
             return val
+        
+    def __len__(self) -> int:
+        return self.redis.llen(self.name)
 
 
 class Defaultdict(Dict, defaultdict):
