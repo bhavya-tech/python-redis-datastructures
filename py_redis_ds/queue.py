@@ -90,7 +90,8 @@ class PriorityQueue(Queue, pyqueue.PriorityQueue):
         self.redis.zadd(self.name, {item_to_add: priority})
 
     def _fetch(self) -> list[tuple[int, T]]:
-        return self.redis.zrange(self.name, 0, -1, withscores=True)
+        rec = self.redis.zrange(self.name, 0, -1, withscores=True)
+        return [(score, pickle.loads(item)[0]) for item, score in rec]
 
     def _get(self) -> tuple[int, T]:
         item_added_picklized, score = self.redis.zpopmin(self.name, 1)[0]
