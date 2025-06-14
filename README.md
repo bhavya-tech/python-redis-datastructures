@@ -1,6 +1,8 @@
 # Redis-Backed Data Structures for Python
 
-Redis-backed Python data structures that function like built-ins but store data on a Redis server, enabling shared access across distributed systems.
+Redis-backed Python data structures that function like built-ins but store data on a Redis server.
+  - Facilitates shared access across distributed systems
+  - Avoids the transfer of large pickle objects and pickling/unpickling overhead
 
 ---
 
